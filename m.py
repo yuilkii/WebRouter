@@ -3,13 +3,19 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 
 from main import main as main_blueprint
-from auth import auth as auth_blueprint
 
 app = Flask(__name__)
+from auth import auth as auth_blueprint
+
+app.register_blueprint(auth_blueprint)
+from main import main as main_blueprint
+
+app.register_blueprint(main_blueprint)
 # app.config['SECRET_KEY'] = 'zyxw4342vut123srqpo89nmlkjihgf78213123edc1233ba'
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///server.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+db.init_app(app)
 
 
 class User(db.Model):
